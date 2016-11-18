@@ -12,8 +12,7 @@ namespace GigHub.Web.Data.Migrations
                 name: "Genres",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                    Id = table.Column<byte>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
