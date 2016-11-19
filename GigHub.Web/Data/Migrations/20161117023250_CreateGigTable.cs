@@ -24,8 +24,7 @@ namespace GigHub.Web.Data.Migrations
                 name: "Gigs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                    Id = table.Column<string>(nullable: false),
                     ArtistId = table.Column<string>(nullable: true),
                     DateTime = table.Column<DateTime>(nullable: false),
                     GenreId = table.Column<byte>(nullable: true),

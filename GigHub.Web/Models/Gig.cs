@@ -5,7 +5,9 @@ namespace GigHub.Web.Models
 {
     public class Gig
     {
-        public int Id { get; set; }
+        [Key]
+        [StringLength(255)]
+        public string Id { get; set; }
         
         [Required]
         public ApplicationUser Artist { get; set; }

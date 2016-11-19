@@ -79,7 +79,7 @@ namespace GigHub.Web.Data.Migrations
 
             modelBuilder.Entity("GigHub.Web.Models.Gig", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("ArtistId");
