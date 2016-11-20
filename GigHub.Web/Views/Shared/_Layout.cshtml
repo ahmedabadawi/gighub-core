@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - GigHub.Web</title>
+    <title>@ViewData["Title"] - GigHub</title>
 
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -26,12 +27,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">GigHub.Web</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">GigHub</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Gigs" asp-action="Create">Add a gig</a></li>
+                    <li><a asp-area="" asp-controller="Gigs" asp-action="Create">Add a Gig</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
@@ -41,7 +41,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2016 - GigHub.Web</p>
+            <p>&copy; 2016 - GigHub</p>
         </footer>
     </div>
 

@@ -1,10 +1,10 @@
 @model GigHub.Web.ViewModels.GigFormViewModel
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Add a Gig";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <form asp-controller="Gigs" asp-action="Create" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" asp-antiforgery="true" class="form-horizontal">
-    <h2>Add a gig</h2>
+    <h2>Add a Gig</h2>
 
     <div class="form-group">
         <label asp-for="Venue" class="control-label"></label>
