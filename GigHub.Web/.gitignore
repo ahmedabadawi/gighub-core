@@ -233,6 +233,10 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
+# Visual Studio Code
+.vscode/
+
+# Project Specifics
 wwwroot/css/site.min.css
 wwwroot/js/site.min.js
 wwwroot/lib/
