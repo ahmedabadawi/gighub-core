@@ -31,6 +31,20 @@ namespace GigHub.Web.Controllers
         }
 
         [Authorize]
+        public async Task<IActionResult> Mine() 
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+
+            var gigs = _context.Gigs
+                .Where(g => g.ArtistId == currentUser.Id && g.DateTime > DateTime.Now)
+                .Include(g => g.Genre)
+                .ToList();
+
+            
+            return View(gigs);
+        }
+
+        [Authorize]
         public async Task<IActionResult> Attending()
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -90,7 +104,7 @@ namespace GigHub.Web.Controllers
             _context.Gigs.Add(gig);
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Mine", "Gigs");
         }
     }
 }
