@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace GigHub.Web.Models
 {
@@ -24,5 +25,7 @@ namespace GigHub.Web.Models
     
         [Required]
         public byte GenreId { get; set; }
+
+        public IEnumerable<Attendance> Attendances { get; set; }
     }
 }

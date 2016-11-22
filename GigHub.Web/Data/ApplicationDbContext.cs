@@ -29,6 +29,7 @@ namespace GigHub.Web.Data
             
             builder.Entity<Attendance>()
                 .HasKey(a => new { a.GigId, a.AttendeeId });
+/*
             builder.Entity<Attendance>()            
                 .HasOne(a => a.Gig)
                 .WithMany()
@@ -40,9 +41,10 @@ namespace GigHub.Web.Data
                 .WithMany()
                 .HasForeignKey(a => a.AttendeeId)
                 .OnDelete(DeleteBehavior.Cascade);
-                
+  */              
             builder.Entity<Following>()
                 .HasKey(f => new { f.FollowerId, f.FolloweeId });
+/*
             builder.Entity<Following>()            
                 .HasOne(f => f.Follower)
                 .WithMany()
@@ -54,6 +56,7 @@ namespace GigHub.Web.Data
                 .WithMany()
                 .HasForeignKey(f => f.FolloweeId)
                 .OnDelete(DeleteBehavior.SetNull);
+*/
         }
     }
 }

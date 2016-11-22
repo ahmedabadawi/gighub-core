@@ -1,10 +1,12 @@
 using System;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 using GigHub.Web.ViewModels;
 using GigHub.Web.Data;
@@ -16,13 +18,41 @@ namespace GigHub.Web.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
+        private readonly ILogger _logger;
 
         public GigsController (
             ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
             _context = context;
+            _logger = loggerFactory.CreateLogger<GigsController>();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Attending()
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            
+            var gigs = _context.Gigs
+                .Where(g => g.Attendances.Any(a => a.AttendeeId == currentUser.Id))
+                .Include(g => g.Artist)
+                .Include(g => g.Genre)
+                .ToList();
+            
+
+            foreach (var gig in gigs)
+            {
+                _logger.LogDebug(string.Format("Date:{0}, Venue: {1}, Artist:{2}, Genre:{3}",
+                    gig.DateTime, gig.Venue, gig.Artist.Name, gig.Genre.Name));
+            }
+
+            var viewModel = new GigsViewModel() {
+                UpcomingGigs = gigs,
+                ShowActions = User.Identity.IsAuthenticated
+            };
+            return View(viewModel);
         }
 
         [Authorize]
