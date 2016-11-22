@@ -16,7 +16,7 @@ namespace GigHub.Web.Data
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<Following> Followings { get; set; }
-        
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -53,11 +53,7 @@ namespace GigHub.Web.Data
                 .HasOne(f => f.Followee)
                 .WithMany()
                 .HasForeignKey(f => f.FolloweeId)
-                .OnDelete(DeleteBehavior.Cascade);
-            
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
