@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using GigHub.Web.Data;
 using GigHub.Web.Models;
+using GigHub.Web.ViewModels;
 
 namespace GigHub.Web.Controllers
 {
@@ -29,7 +30,12 @@ namespace GigHub.Web.Controllers
                 .Where(g => g.DateTime > DateTime.Now)
                 .ToList();
             
-            return View(upcomingGigs);
+            var viewModel = new HomeViewModel() {
+                UpcomingGigs = upcomingGigs,
+                ShowActions = User.Identity.IsAuthenticated
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Error()
