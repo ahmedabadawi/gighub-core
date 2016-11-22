@@ -15,7 +15,8 @@ namespace GigHub.Web.Data
         public DbSet<Gig> Gigs { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
-
+        public DbSet<Following> Followings { get; set; }
+        
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -25,6 +26,7 @@ namespace GigHub.Web.Data
         {
             base.OnModelCreating(builder);
             builder.HasPostgresExtension("uuid-ossp");
+            
             builder.Entity<Attendance>()
                 .HasKey(a => new { a.GigId, a.AttendeeId });
             builder.Entity<Attendance>()            
@@ -39,6 +41,20 @@ namespace GigHub.Web.Data
                 .HasForeignKey(a => a.AttendeeId)
                 .OnDelete(DeleteBehavior.Cascade);
                 
+            builder.Entity<Following>()
+                .HasKey(f => new { f.FollowerId, f.FolloweeId });
+            builder.Entity<Following>()            
+                .HasOne(f => f.Follower)
+                .WithMany()
+                .HasForeignKey(f => f.FollowerId)
+                .OnDelete(DeleteBehavior.SetNull);
+                
+            builder.Entity<Following>()            
+                .HasOne(f => f.Followee)
+                .WithMany()
+                .HasForeignKey(f => f.FolloweeId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
