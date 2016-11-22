@@ -1,0 +1,14 @@
+@model IEnumerable<GigHub.Web.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Artists I'm Following";
+}
+
+<h1>Artists I'm Following</h1>
+
+<ul>
+    @foreach(var artist in Model)
+    {
+        <li>@artist.Name</li>
+    }
+</ul>
