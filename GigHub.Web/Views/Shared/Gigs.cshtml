@@ -1,9 +1,11 @@
 @model GigHub.Web.ViewModels.GigsViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = Model.Heading;
 }
 
-<ul class="gigs">
+<h1>@Model.Heading</h1>
+
+<ul class="gigs voffset4">
     @foreach(var gig in Model.UpcomingGigs)
     {
         <li>
