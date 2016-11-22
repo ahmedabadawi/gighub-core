@@ -1,10 +1,11 @@
 @model GigHub.Web.ViewModels.GigFormViewModel
 @{
-    ViewBag.Title = "Add a Gig";
+    ViewBag.Title = Model.Heading;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Add a Gig</h2>
-<form asp-controller="Gigs" asp-action="Create" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" asp-antiforgery="true" class="form-horizontal">
+<h2>@Model.Heading</h2>
+<form asp-controller="Gigs" asp-action="@Model.Action" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" asp-antiforgery="true" class="form-horizontal">
+    <input asp-for="Id" type="hidden"></input>
     <p class="alert alert-info">All fields are <strong>required</strong>.</p>
 
     <div class="form-group">
@@ -29,7 +30,7 @@
         </select>
         <span asp-validation-for="Genre" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary btn-lg">Save</button>
 </form>
 
 @section Scripts {

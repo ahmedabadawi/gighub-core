@@ -74,10 +74,31 @@ namespace GigHub.Web.Controllers
         public IActionResult Create()
         {
             var viewModel = new GigFormViewModel() {
+                Heading = "Add a Gig",
                 Genres = _context.Genres.ToList()
             };
 
-            return View(viewModel);
+            return View("GigForm", viewModel);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            
+            var gig = _context.Gigs.Single(g => g.Id == id && g.ArtistId == currentUser.Id);
+            
+            var viewModel = new GigFormViewModel() {
+                Heading = "Edit a Gig",
+                Genres = _context.Genres.ToList(),
+                Id = gig.Id,
+                Date = gig.DateTime.ToString("d MMM yyyy"),
+                Time = gig.DateTime.ToString("HH:mm"),
+                Genre = gig.GenreId,
+                Venue = gig.Venue
+            };
+
+            return View("GigForm", viewModel);
         }
 
         [Authorize]
@@ -88,7 +109,8 @@ namespace GigHub.Web.Controllers
             if(!ModelState.IsValid)
             {
                 viewModel.Genres = _context.Genres.ToList();
-                return View("Create", viewModel);
+                viewModel.Heading = "Add a Gig";
+                return View("GigForm", viewModel);
             }
 
             var artist = await _userManager.GetUserAsync(HttpContext.User);
@@ -102,6 +124,32 @@ namespace GigHub.Web.Controllers
             };
 
             _context.Gigs.Add(gig);
+            _context.SaveChanges();
+
+            return RedirectToAction("Mine", "Gigs");
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(GigFormViewModel viewModel)
+        {
+            if(!ModelState.IsValid)
+            {
+                viewModel.Genres = _context.Genres.ToList();
+                viewModel.Heading = "Edit a Gig";
+                return View("GigForm", viewModel);
+            }
+
+            var artist = await _userManager.GetUserAsync(HttpContext.User);
+            
+            var gig = _context.Gigs
+                .Single(g => g.Id == viewModel.Id && g.ArtistId == artist.Id);
+            
+            gig.DateTime = viewModel.GetDateTime();
+            gig.GenreId = viewModel.Genre;
+            gig.Venue = viewModel.Venue;             
+
             _context.SaveChanges();
 
             return RedirectToAction("Mine", "Gigs");
