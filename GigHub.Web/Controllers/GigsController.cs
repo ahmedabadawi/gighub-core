@@ -36,7 +36,9 @@ namespace GigHub.Web.Controllers
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
 
             var gigs = _context.Gigs
-                .Where(g => g.ArtistId == currentUser.Id && g.DateTime > DateTime.Now)
+                .Where(g => g.ArtistId == currentUser.Id && 
+                    g.DateTime > DateTime.Now && 
+                    !g.IsCancelled)
                 .Include(g => g.Genre)
                 .ToList();
 

@@ -10,6 +10,8 @@ namespace GigHub.Web.Models
         [StringLength(255)]
         public string Id { get; set; }
         
+        public bool IsCancelled { get; set; }
+
         public ApplicationUser Artist { get; set; }
         
         [Required]

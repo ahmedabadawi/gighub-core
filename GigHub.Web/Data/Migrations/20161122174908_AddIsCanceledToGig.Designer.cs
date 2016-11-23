@@ -8,9 +8,10 @@ using GigHub.Web.Data;
 namespace GigHub.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161122174908_AddIsCanceledToGig")]
+    partial class AddIsCanceledToGig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("Npgsql:PostgresExtension:.uuid-ossp", "'uuid-ossp', '', ''")
@@ -125,7 +126,7 @@ namespace GigHub.Web.Data.Migrations
 
                     b.Property<byte>("GenreId");
 
-                    b.Property<bool>("IsCancelled");
+                    b.Property<bool>("IsCanceled");
 
                     b.Property<string>("Venue")
                         .IsRequired()

@@ -12,50 +12,55 @@ using GigHub.Web.Data;
 using GigHub.Web.Models;
 using GigHub.Web.Dtos;
 
-namespace GigHub.Web.Controllers
+namespace GigHub.Web.Controllers.Api
 {
     [Authorize]
     [Route("api/[controller]")]
-    public class FollowingsController : Controller
+    public class AttendancesController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly ILogger _logger;
 
-        public FollowingsController(
+        public AttendancesController(
             ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
             ILoggerFactory loggerFactory)
         {
             _context = context;
             _userManager = userManager;
-            _logger = loggerFactory.CreateLogger<FollowingsController>();
+            _logger = loggerFactory.CreateLogger<AttendancesController>();
+        }
+
+        public IEnumerable<Attendance> GetAll() {
+            var attendances = _context.Attendances.ToList();
+
+            return attendances;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Follow(FollowingDto dto)
+        public async Task<IActionResult> Attend(AttendanceDto dto)
         {
-            if(string.IsNullOrEmpty(dto.ArtistId)) {
+            if(string.IsNullOrEmpty(dto.GigId)) {
                 return BadRequest();
             }
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             _logger.LogInformation("Current User: " + currentUser.Id);
 
             var exists = 
-                _context.Followings.Any(
-                    f => f.FollowerId == currentUser.Id && f.FolloweeId == dto.ArtistId);
+                _context.Attendances.Any(
+                    a => a.AttendeeId == currentUser.Id && a.GigId == dto.GigId);
             
             if(exists)
             {
-                return BadRequest("You are already following this artist");
+                return BadRequest("The attendance already exists");
             }
-
-            var following = new Following() {
-                FolloweeId = dto.ArtistId,
-                FollowerId = currentUser.Id
+            var attendance = new Attendance() {
+                GigId = dto.GigId,
+                AttendeeId = currentUser.Id
             };
 
-            _context.Followings.Add(following);
+            _context.Attendances.Add(attendance);
             _context.SaveChanges();
 
             return Ok();
