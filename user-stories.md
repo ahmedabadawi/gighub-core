@@ -5,7 +5,7 @@ Artists can sign up and list their gigs. When adding a gig, they should specify 
 An artist should have a page called My Upcoming Gigs. From there, they should be able to edit or remove and existing  gig, or add another gig to the list.
 Users should be able to view all upcoming gigs or search them by artist, genre or location. They should be able to view details of a gig and add it to their calendar.
 Additionally, users should be able to follow their favorite artists. When they follow an artist, they should see the upcoming gigs of their favorite artists in the Gig Feed.
-
+The users should be notified when the artist updates, cancels or create a new gig.
 User Stories
 ~~~~~~~~~~~~
 Gigs - Add a gig [1]* 
@@ -22,4 +22,6 @@ Following - Who I'm following [4]*
 Following - Gig feed [4]
 Gig Calendar - Remove a gig from calendar [5]
 Following - Unfollow an artist [5]
-
+Notification - Notify users when a gig they are attending has been updated
+Notification - Notify users when a gig they are attending has been cancelled
+Notification - Notify users when an artist they are following created new gig 
