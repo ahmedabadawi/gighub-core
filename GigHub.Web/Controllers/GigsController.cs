@@ -146,11 +146,11 @@ namespace GigHub.Web.Controllers
             var artist = await _userManager.GetUserAsync(HttpContext.User);
             
             var gig = _context.Gigs
+                .Include(g => g.Attendances)
+                    .ThenInclude(a => a.Attendee)
                 .Single(g => g.Id == viewModel.Id && g.ArtistId == artist.Id);
             
-            gig.DateTime = viewModel.GetDateTime();
-            gig.GenreId = viewModel.Genre;
-            gig.Venue = viewModel.Venue;             
+            gig.Modify(viewModel.GetDateTime(), viewModel.Venue, viewModel.Genre);
 
             _context.SaveChanges();
 
