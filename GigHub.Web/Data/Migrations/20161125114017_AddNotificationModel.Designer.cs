@@ -8,9 +8,10 @@ using GigHub.Web.Data;
 namespace GigHub.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161125114017_AddNotificationModel")]
+    partial class AddNotificationModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("Npgsql:PostgresExtension:.uuid-ossp", "'uuid-ossp', '', ''")
@@ -150,11 +151,11 @@ namespace GigHub.Web.Data.Migrations
                     b.Property<string>("GigId")
                         .IsRequired();
 
+                    b.Property<int>("NotificationType");
+
                     b.Property<DateTime?>("OriginalDateTime");
 
                     b.Property<string>("OriginalVenue");
-
-                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 

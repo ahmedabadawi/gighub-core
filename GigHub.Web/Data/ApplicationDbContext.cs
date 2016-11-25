@@ -16,6 +16,8 @@ namespace GigHub.Web.Data
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<Following> Followings { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<UserNotification> UserNotifications { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -57,6 +59,9 @@ namespace GigHub.Web.Data
                 .HasForeignKey(f => f.FolloweeId)
                 .OnDelete(DeleteBehavior.SetNull);
 */
+
+            builder.Entity<UserNotification>()
+                .HasKey(n => new { n.UserId, n.NotificationId });
         }
     }
 }
