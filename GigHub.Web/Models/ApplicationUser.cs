@@ -13,5 +13,23 @@ namespace GigHub.Web.Models
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
+
+        //public ICollection<ApplicationUser> Followers { get; set; }
+        //public ICollection<ApplicationUser> Followees { get; set; }
+        
+        public ICollection<UserNotification> UserNotifications { get; set; }
+
+        public ApplicationUser()
+        {
+            //Followers = new List<ApplicationUser>();
+            //Followees = new List<ApplicationUser>();
+
+            UserNotifications = new List<UserNotification>();
+        }
+
+        public void Notify(Notification notification)
+        {
+            UserNotifications.Add(new UserNotification(this,notification));
+        }
     }
 }

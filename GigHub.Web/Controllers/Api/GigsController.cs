@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 using GigHub.Web.Models;
 using GigHub.Web.Data;
@@ -35,38 +36,13 @@ namespace GigHub.Web.Controllers.Api
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var gig = _context.Gigs
+                .Include(g => g.Attendances)
+                    .ThenInclude(a => a.Attendee)
                 .Single(g => g.Id == id && g.ArtistId == currentUser.Id);
-            if(gig.IsCancelled) 
-            {
-                return NotFound();    
-            }
-
-            gig.IsCancelled = true;
-
-            // Create Notifications
-            var notification = new Notification()
-            {
-                DateTime = DateTime.Now,
-                Gig = gig,
-                Type = NotificationType.GigCancelled
-            };
-            _context.Notifications.Add(notification);
-
-            var attendees = _context.Attendances
-                .Where(a => a.GigId == gig.Id)
-                .Select(a => a.Attendee)
-                .ToList();
             
-            foreach(var attendee in attendees) 
-            {
-                var userNotification = new  UserNotification()
-                {
-                    User = attendee,
-                    Notification = notification
-                };
+            if(gig.IsCancelled) return NotFound();    
 
-                _context.UserNotifications.Add(userNotification);
-            }
+            gig.Cancel();
 
             _context.SaveChanges();
 
