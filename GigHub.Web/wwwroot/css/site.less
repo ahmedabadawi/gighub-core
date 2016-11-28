@@ -50,15 +50,9 @@ textarea {
 		}
 	}
 }
-@media {
-	screen {
-		and {
-			(max-width {
-				&:767px) {
-					.carousel-caption { display: none;
-				}
-			}
-		}
+@media screen and (max-width: 767px) {
+	.carousel-caption { 
+		display: none;
 	}
 }
 .voffset {
@@ -201,10 +195,14 @@ textarea {
 		}
 	}
 	ul.notifications>li {
-		border-bottom: 1px solid #dddddd;
+		border-bottom: 1px solid #ddd;
 		padding: 10px;
 		&::last-child {
 			border-bottom: none;
 		}
 	}
+}
+
+#searchGigs {
+	width: 300px;
 }
