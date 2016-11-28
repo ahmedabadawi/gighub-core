@@ -1,0 +1,29 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@model GigHub.Web.ViewModels.GigDetailsViewModel
+@{
+    ViewBag.Title = "Gig Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>
+    @Model.Gig.Artist.Name
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (Model.IsFollowing)
+        {
+            <button data-artist-id="@Model.Gig.Artist.Id" class="btn btn-info">Following</button>
+        }
+        else
+        {
+            <button data-artist-id="@Model.Gig.Artist.Id" class="btn btn-default">Follow</button>
+        }
+    }
+</h2>
+<p>
+    Performing at @Model.Gig.Venue on @Model.Gig.DateTime.ToString("d MMM") at @Model.Gig.DateTime.ToString("HH:mm")
+</p>
+@if(SignInManager.IsSignedIn(User) && Model.IsAttending)
+{
+    <p>You are going to this event</p>
+}

@@ -30,7 +30,7 @@
             </div>
             <div class="details">
                 <span class="artist">
-                    @gig.Artist.Name
+                    <a asp-controller="Gigs" asp-action="Details" asp-route-id="@gig.Id">@gig.Artist.Name</a>
                     @if(gig.IsCancelled)
                     {
                         <span class="label label-warning">Cancelled</span>

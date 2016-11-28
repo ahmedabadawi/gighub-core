@@ -16,6 +16,7 @@ namespace GigHub.Web.Controllers
 {
     public class GigsController : Controller
     {
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly ILogger _logger;
@@ -23,9 +24,11 @@ namespace GigHub.Web.Controllers
         public GigsController (
             ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
             _context = context;
             _logger = loggerFactory.CreateLogger<GigsController>();
         }
@@ -76,6 +79,34 @@ namespace GigHub.Web.Controllers
         public IActionResult Search(GigsViewModel viewModel) 
         {
             return RedirectToAction("Index", "Home", new { query = viewModel.SearchTerm });
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            var gig = _context.Gigs
+                .Include(g => g.Artist)
+                .Include(g => g.Genre)
+                .SingleOrDefault(g => g.Id == id);
+            
+            if(gig == null)
+                return RedirectToAction("Index", "Home");
+            
+            var viewModel = new GigDetailsViewModel(){
+                Gig = gig
+            };
+
+            if(_signInManager.IsSignedIn(HttpContext.User))
+            {
+                var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+
+                viewModel.IsAttending = _context.Attendances
+                    .Any(a => a.GigId == gig.Id && a.AttendeeId == currentUser.Id);
+                
+                viewModel.IsFollowing = _context.Followings
+                    .Any(f => f.FolloweeId == gig.Artist.Id && f.FollowerId == currentUser.Id);
+            }
+
+            return View("Details", viewModel);
         }
 
         [Authorize]
