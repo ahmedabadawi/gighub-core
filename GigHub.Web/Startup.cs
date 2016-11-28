@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
+
 using GigHub.Web.Data;
 using GigHub.Web.Models;
 using GigHub.Web.Services;
@@ -35,6 +37,7 @@ namespace GigHub.Web
         }
 
         public IConfigurationRoot Configuration { get; }
+        private MapperConfiguration _mapperConfiguration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -52,6 +55,14 @@ namespace GigHub.Web
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            // Add AutoMapper
+            _mapperConfiguration = new MapperConfiguration(config =>
+                {
+                    config.AddProfile(new MappingProfile());
+                });
+            
+            services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
