@@ -65,5 +65,24 @@ namespace GigHub.Web.Controllers.Api
 
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAttendance(string id)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+
+            var attendance = _context.Attendances
+                .SingleOrDefault(a => a.GigId == id && a.AttendeeId == currentUser.Id);
+
+            if(attendance == null)
+            {
+                return NotFound();
+            }
+
+            _context.Attendances.Remove(attendance);
+            _context.SaveChanges();
+
+            return Ok(id);
+        }
     }
 }

@@ -59,18 +59,23 @@ namespace GigHub.Web.Controllers
                 .Include(g => g.Artist)
                 .Include(g => g.Genre)
                 .ToList();
+                
+            var attendances = _context.Attendances
+                .Where(a => a.AttendeeId == currentUser.Id && a.Gig.DateTime > DateTime.Now)
+                .ToList()
+                .ToLookup(a => a.GigId);
             
-
-            foreach (var gig in gigs)
-            {
-                _logger.LogDebug(string.Format("Date:{0}, Venue: {1}, Artist:{2}, Genre:{3}",
-                    gig.DateTime, gig.Venue, gig.Artist.Name, gig.Genre.Name));
-            }
+            var followings = _context.Followings
+                .Where(f => f.FollowerId == currentUser.Id)
+                .ToList()
+                .ToLookup(a => a.FolloweeId);
 
             var viewModel = new GigsViewModel() {
                 UpcomingGigs = gigs,
                 ShowActions = User.Identity.IsAuthenticated,
-                Heading = "Gigs I'm Attending"
+                Heading = "Gigs I'm Attending",
+                Attendances = attendances,
+                Followings = followings
             };
             return View("Gigs", viewModel);
         }

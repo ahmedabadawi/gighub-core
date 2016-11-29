@@ -37,7 +37,11 @@
                     }
                     @if(Model.ShowActions)
                     {
-                        <button data-artist-id="@gig.Artist.Id" class="btn btn-link btn-sm js-toggle-follow">Follow</button>
+                        <button 
+                            data-artist-id="@gig.Artist.Id" 
+                            class="btn btn-link btn-sm js-toggle-follow">
+                            @(Model.Followings.Contains(gig.Artist.Id) ? "Following" : "Follow")
+                        </button>
                     }
                 </span>
                 <span class="genre">
@@ -45,7 +49,13 @@
                 </span>
                 @if(Model.ShowActions && !gig.IsCancelled)
                 {
-                    <button data-gig-id="@gig.Id" class="btn btn-default btn-sm pull-right js-toggle-attendance">Going?</button>
+                    <button 
+                        data-gig-id="@gig.Id" 
+                        class="btn 
+                                @(Model.Attendances.Contains(gig.Id) ? "btn-info" : "btn-default") 
+                                btn-sm pull-right js-toggle-attendance">
+                        @(Model.Attendances.Contains(gig.Id) ? "Going" : "Going?")
+                    </button>
                 }
             </div>
         </li>
@@ -58,27 +68,57 @@
         $(document).ready(function() {
             $(".js-toggle-attendance").click(function(e) {
                 var button = $(e.target);
-                $.post("/api/Attendances", { gigId: button.attr("data-gig-id") })
+                if (button.hasClass("btn-default")) {
+                    $.post("/api/Attendances", { gigId: button.attr("data-gig-id") })
+                        .done(function() {
+                            button
+                                .removeClass("btn-default")
+                                .addClass("btn-info")
+                                .text("Going");
+                        })
+                        .fail(function() {
+                            alert("Something failed!");
+                        });
+                } else {
+                    $.ajax( { 
+                        url: "/api/Attendances/" + button.attr("data-gig-id"),
+                        method: "DELETE"
+                    })
                     .done(function() {
                         button
-                            .removeClass("btn-default")
-                            .addClass("btn-info")
-                            .text("Going");
+                            .removeClass("btn-info")
+                            .addClass("btn-default")
+                            .text("Going?");
                     })
                     .fail(function() {
                         alert("Something failed!");
-                    });
+                    })
+                }
             });
 
             $(".js-toggle-follow").click(function(e) {
                 var button = $(e.target);
-                $.post("/api/Followings", { artistId: button.attr("data-artist-id") })
-                    .done(function() {
-                        button.text("Following");
-                    })
-                    .fail(function() {
-                        alert("Something failed!");
-                    });
+                if (button.text() == "Follow") {
+                    $.post("/api/Followings", { artistId: button.attr("data-artist-id") })
+                        .done(function() {
+                            button.text("Following");
+                        })
+                        .fail(function() {
+                            alert("Something failed!");
+                        });
+                } else {
+                    $.ajax( { 
+                        url: "/api/Followings/" + button.attr("data-artist-id"),
+                        method: "DELETE"
+                        })
+                        .done(function() {
+                            button
+                                .text("Follow");
+                        })
+                        .fail(function() {
+                            alert("Something failed!");
+                        });
+                }
             });
         });
     </script>

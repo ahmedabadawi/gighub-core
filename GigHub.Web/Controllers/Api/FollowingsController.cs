@@ -60,5 +60,24 @@ namespace GigHub.Web.Controllers.Api
 
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Unfollow(string id)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            
+            var following = _context.Followings
+                .SingleOrDefault(f => f.FollowerId == currentUser.Id && f.FolloweeId == id);
+            
+            if (following == null)
+            {
+                return NotFound();
+            }
+
+            _context.Followings.Remove(following);
+            _context.SaveChanges();
+
+            return Ok(id);
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 
 using GigHub.Web.Data;
 using GigHub.Web.Models;
@@ -14,14 +15,20 @@ namespace GigHub.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public HomeController (
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        public IActionResult Index(string query = null)
+        public async Task<IActionResult> Index(string query = null)
         {
             var upcomingGigs = 
                 _context.Gigs
@@ -37,11 +44,35 @@ namespace GigHub.Web.Controllers
                         g.Venue.Contains(query));
             }
             
+            ILookup<string, Attendance> attendances = null;
+            ILookup<string, Following> followings = null;
+
+            if(_signInManager.IsSignedIn(HttpContext.User)) 
+            {
+                var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+                attendances = _context.Attendances
+                    .Where(a => a.AttendeeId == currentUser.Id && a.Gig.DateTime > DateTime.Now)
+                    .ToList()
+                    .ToLookup(a => a.GigId);
+                
+                followings = _context.Followings
+                    .Where(f => f.FollowerId == currentUser.Id)
+                    .ToList()
+                    .ToLookup(f => f.FolloweeId);
+            }
+            else
+            {
+                attendances = Enumerable.Empty<Attendance>().ToLookup(a => a.GigId);
+                followings = Enumerable.Empty<Following>().ToLookup(f => f.FolloweeId);
+            }
+
             var viewModel = new GigsViewModel() {
                 UpcomingGigs = upcomingGigs,
                 ShowActions = User.Identity.IsAuthenticated,
                 Heading = "Upcoming Gigs",
-                SearchTerm = query
+                SearchTerm = query,
+                Attendances = attendances,
+                Followings = followings
             };
 
             return View("Gigs", viewModel);
