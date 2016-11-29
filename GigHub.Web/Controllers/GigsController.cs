@@ -65,17 +65,11 @@ namespace GigHub.Web.Controllers
                 .ToList()
                 .ToLookup(a => a.GigId);
             
-            var followings = _context.Followings
-                .Where(f => f.FollowerId == currentUser.Id)
-                .ToList()
-                .ToLookup(a => a.FolloweeId);
-
             var viewModel = new GigsViewModel() {
                 UpcomingGigs = gigs,
                 ShowActions = User.Identity.IsAuthenticated,
                 Heading = "Gigs I'm Attending",
-                Attendances = attendances,
-                Followings = followings
+                Attendances = attendances
             };
             return View("Gigs", viewModel);
         }

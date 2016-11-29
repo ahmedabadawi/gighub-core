@@ -45,7 +45,6 @@ namespace GigHub.Web.Controllers
             }
             
             ILookup<string, Attendance> attendances = null;
-            ILookup<string, Following> followings = null;
 
             if(_signInManager.IsSignedIn(HttpContext.User)) 
             {
@@ -55,15 +54,10 @@ namespace GigHub.Web.Controllers
                     .ToList()
                     .ToLookup(a => a.GigId);
                 
-                followings = _context.Followings
-                    .Where(f => f.FollowerId == currentUser.Id)
-                    .ToList()
-                    .ToLookup(f => f.FolloweeId);
             }
             else
             {
                 attendances = Enumerable.Empty<Attendance>().ToLookup(a => a.GigId);
-                followings = Enumerable.Empty<Following>().ToLookup(f => f.FolloweeId);
             }
 
             var viewModel = new GigsViewModel() {
@@ -71,8 +65,7 @@ namespace GigHub.Web.Controllers
                 ShowActions = User.Identity.IsAuthenticated,
                 Heading = "Upcoming Gigs",
                 SearchTerm = query,
-                Attendances = attendances,
-                Followings = followings
+                Attendances = attendances
             };
 
             return View("Gigs", viewModel);
