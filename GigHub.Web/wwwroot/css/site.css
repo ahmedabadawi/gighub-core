@@ -156,7 +156,9 @@ textarea {
   font-weight: bold;
 }
 .gigs > li .details .genre {
-  font-size: 15px;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 4px;
 }
 .gigs > li .actions {
   display: none;

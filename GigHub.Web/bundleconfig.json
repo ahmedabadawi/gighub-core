@@ -8,6 +8,10 @@
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
+      "wwwroot/js/services/attendanceService.js",
+      "wwwroot/js/services/followingService.js",
+      "wwwroot/js/controllers/gigsController.js",
+      "wwwroot/js/controllers/gigDetailsController.js",
       "wwwroot/js/site.js"
     ],
     "minify": {
