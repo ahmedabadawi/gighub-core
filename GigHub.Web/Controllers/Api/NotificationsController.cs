@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 
 using GigHub.Web.Core.ViewModels;
-using GigHub.Web.Data;
+using GigHub.Web.Persistence;
 using GigHub.Web.Core.Models;
 using GigHub.Web.Core.Dtos;
 

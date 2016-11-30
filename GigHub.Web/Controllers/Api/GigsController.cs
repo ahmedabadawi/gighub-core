@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using GigHub.Web.Core.Models;
-using GigHub.Web.Data;
+using GigHub.Web.Persistence;
 
 namespace GigHub.Web.Controllers.Api
 {

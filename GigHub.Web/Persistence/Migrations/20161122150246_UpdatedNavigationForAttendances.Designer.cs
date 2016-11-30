@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using GigHub.Web.Data;
+using GigHub.Web.Persistence;
 
-namespace GigHub.Web.Data.Migrations
+namespace GigHub.Web.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20161122150246_UpdatedNavigationForAttendances")]

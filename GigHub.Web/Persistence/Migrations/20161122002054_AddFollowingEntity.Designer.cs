@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using GigHub.Web.Data;
+using GigHub.Web.Persistence;
 
-namespace GigHub.Web.Data.Migrations
+namespace GigHub.Web.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20161121014355_AddNameToApplicationUser")]
-    partial class AddNameToApplicationUser
+    [Migration("20161122002054_AddFollowingEntity")]
+    partial class AddFollowingEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,6 +82,36 @@ namespace GigHub.Web.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("GigHub.Web.Core.Models.Attendance", b =>
+                {
+                    b.Property<string>("GigId");
+
+                    b.Property<string>("AttendeeId");
+
+                    b.HasKey("GigId", "AttendeeId");
+
+                    b.HasIndex("AttendeeId");
+
+                    b.HasIndex("GigId");
+
+                    b.ToTable("Attendances");
+                });
+
+            modelBuilder.Entity("GigHub.Web.Core.Models.Following", b =>
+                {
+                    b.Property<string>("FollowerId");
+
+                    b.Property<string>("FolloweeId");
+
+                    b.HasKey("FollowerId", "FolloweeId");
+
+                    b.HasIndex("FolloweeId");
+
+                    b.HasIndex("FollowerId");
+
+                    b.ToTable("Followings");
                 });
 
             modelBuilder.Entity("GigHub.Web.Core.Models.Gig", b =>
@@ -214,6 +244,32 @@ namespace GigHub.Web.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("GigHub.Web.Core.Models.Attendance", b =>
+                {
+                    b.HasOne("GigHub.Web.Core.Models.ApplicationUser", "Attendee")
+                        .WithMany()
+                        .HasForeignKey("AttendeeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GigHub.Web.Core.Models.Gig", "Gig")
+                        .WithMany()
+                        .HasForeignKey("GigId")
+                        .OnDelete(DeleteBehavior.SetNull);
+                });
+
+            modelBuilder.Entity("GigHub.Web.Core.Models.Following", b =>
+                {
+                    b.HasOne("GigHub.Web.Core.Models.ApplicationUser", "Followee")
+                        .WithMany()
+                        .HasForeignKey("FolloweeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GigHub.Web.Core.Models.ApplicationUser", "Follower")
+                        .WithMany()
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("GigHub.Web.Core.Models.Gig", b =>

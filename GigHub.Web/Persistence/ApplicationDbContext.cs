@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using GigHub.Web.Core.Models;
 
-namespace GigHub.Web.Data
+namespace GigHub.Web.Persistence
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

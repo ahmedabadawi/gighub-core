@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using GigHub.Web.Data;
+using GigHub.Web.Persistence;
 
-namespace GigHub.Web.Data.Migrations
+namespace GigHub.Web.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20161122002054_AddFollowingEntity")]
-    partial class AddFollowingEntity
+    [Migration("20161123200459_FixIsCancelledColumnSpelling")]
+    partial class FixIsCancelledColumnSpelling
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -125,6 +125,8 @@ namespace GigHub.Web.Data.Migrations
                     b.Property<DateTime>("DateTime");
 
                     b.Property<byte>("GenreId");
+
+                    b.Property<bool>("IsCancelled");
 
                     b.Property<string>("Venue")
                         .IsRequired()
@@ -254,9 +256,9 @@ namespace GigHub.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GigHub.Web.Core.Models.Gig", "Gig")
-                        .WithMany()
+                        .WithMany("Attendances")
                         .HasForeignKey("GigId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GigHub.Web.Core.Models.Following", b =>
@@ -269,7 +271,7 @@ namespace GigHub.Web.Data.Migrations
                     b.HasOne("GigHub.Web.Core.Models.ApplicationUser", "Follower")
                         .WithMany()
                         .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GigHub.Web.Core.Models.Gig", b =>

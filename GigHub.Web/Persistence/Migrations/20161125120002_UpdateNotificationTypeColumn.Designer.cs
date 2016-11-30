@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using GigHub.Web.Data;
+using GigHub.Web.Persistence;
 
-namespace GigHub.Web.Data.Migrations
+namespace GigHub.Web.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20161125114017_AddNotificationModel")]
-    partial class AddNotificationModel
+    [Migration("20161125120002_UpdateNotificationTypeColumn")]
+    partial class UpdateNotificationTypeColumn
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -151,11 +151,11 @@ namespace GigHub.Web.Data.Migrations
                     b.Property<string>("GigId")
                         .IsRequired();
 
-                    b.Property<int>("NotificationType");
-
                     b.Property<DateTime?>("OriginalDateTime");
 
                     b.Property<string>("OriginalVenue");
+
+                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 

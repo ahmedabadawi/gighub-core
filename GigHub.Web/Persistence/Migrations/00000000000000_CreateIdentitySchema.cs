@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace GigHub.Web.Data.Migrations
+namespace GigHub.Web.Persistence.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

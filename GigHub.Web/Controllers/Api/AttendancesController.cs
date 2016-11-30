@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using GigHub.Web.Core.ViewModels;
-using GigHub.Web.Data;
+using GigHub.Web.Persistence;
 using GigHub.Web.Core.Models;
 using GigHub.Web.Core.Dtos;
 

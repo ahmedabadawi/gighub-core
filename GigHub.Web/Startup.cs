@@ -11,11 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 
-using GigHub.Web.Data;
-using GigHub.Web.Core.Models;
 using GigHub.Web.Services;
 using GigHub.Web.Core;
 using GigHub.Web.Core.Repositories;
+using GigHub.Web.Core.Models;
 using GigHub.Web.Persistence;
 using GigHub.Web.Persistence.Repositories;
 

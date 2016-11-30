@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
 using GigHub.Web.Core.ViewModels;
-using GigHub.Web.Data;
+using GigHub.Web.Persistence;
 using GigHub.Web.Core.Models;
 
 namespace GigHub.Web.Controllers

@@ -3,17 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using GigHub.Web.Data;
+using GigHub.Web.Persistence;
 
-namespace GigHub.Web.Data.Migrations
+namespace GigHub.Web.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20161117025149_OverrideConventionsForGigsAndGenre")]
-    partial class OverrideConventionsForGigsAndGenre
+    [Migration("20161121150519_AddAttendance")]
+    partial class AddAttendance
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
+                .HasAnnotation("Npgsql:PostgresExtension:.uuid-ossp", "'uuid-ossp', '', ''")
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
 
             modelBuilder.Entity("Genre", b =>
@@ -48,6 +49,10 @@ namespace GigHub.Web.Data.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
+
                     b.Property<string>("NormalizedEmail")
                         .HasAnnotation("MaxLength", 256);
 
@@ -79,18 +84,32 @@ namespace GigHub.Web.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("GigHub.Web.Core.Models.Attendance", b =>
+                {
+                    b.Property<string>("GigId");
+
+                    b.Property<string>("AttendeeId");
+
+                    b.HasKey("GigId", "AttendeeId");
+
+                    b.HasIndex("AttendeeId");
+
+                    b.HasIndex("GigId");
+
+                    b.ToTable("Attendances");
+                });
+
             modelBuilder.Entity("GigHub.Web.Core.Models.Gig", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id")
+                        .HasAnnotation("MaxLength", 255);
 
                     b.Property<string>("ArtistId")
                         .IsRequired();
 
                     b.Property<DateTime>("DateTime");
 
-                    b.Property<byte?>("GenreId")
-                        .IsRequired();
+                    b.Property<byte>("GenreId");
 
                     b.Property<string>("Venue")
                         .IsRequired()
@@ -210,6 +229,19 @@ namespace GigHub.Web.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("GigHub.Web.Core.Models.Attendance", b =>
+                {
+                    b.HasOne("GigHub.Web.Core.Models.ApplicationUser", "Attendee")
+                        .WithMany()
+                        .HasForeignKey("AttendeeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GigHub.Web.Core.Models.Gig", "Gig")
+                        .WithMany()
+                        .HasForeignKey("GigId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("GigHub.Web.Core.Models.Gig", b =>
