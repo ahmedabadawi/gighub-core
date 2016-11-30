@@ -30,7 +30,7 @@ namespace GigHub.Web.Data.Migrations
                     b.ToTable("Genres");
                 });
 
-            modelBuilder.Entity("GigHub.Web.Models.ApplicationUser", b =>
+            modelBuilder.Entity("GigHub.Web.Core.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id");
 
@@ -83,7 +83,7 @@ namespace GigHub.Web.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("GigHub.Web.Models.Attendance", b =>
+            modelBuilder.Entity("GigHub.Web.Core.Models.Attendance", b =>
                 {
                     b.Property<string>("GigId");
 
@@ -98,7 +98,7 @@ namespace GigHub.Web.Data.Migrations
                     b.ToTable("Attendances");
                 });
 
-            modelBuilder.Entity("GigHub.Web.Models.Following", b =>
+            modelBuilder.Entity("GigHub.Web.Core.Models.Following", b =>
                 {
                     b.Property<string>("FollowerId");
 
@@ -113,7 +113,7 @@ namespace GigHub.Web.Data.Migrations
                     b.ToTable("Followings");
                 });
 
-            modelBuilder.Entity("GigHub.Web.Models.Gig", b =>
+            modelBuilder.Entity("GigHub.Web.Core.Models.Gig", b =>
                 {
                     b.Property<string>("Id")
                         .HasAnnotation("MaxLength", 255);
@@ -140,7 +140,7 @@ namespace GigHub.Web.Data.Migrations
                     b.ToTable("Gigs");
                 });
 
-            modelBuilder.Entity("GigHub.Web.Models.Notification", b =>
+            modelBuilder.Entity("GigHub.Web.Core.Models.Notification", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -163,7 +163,7 @@ namespace GigHub.Web.Data.Migrations
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("GigHub.Web.Models.UserNotification", b =>
+            modelBuilder.Entity("GigHub.Web.Core.Models.UserNotification", b =>
                 {
                     b.Property<string>("UserId");
 
@@ -287,35 +287,35 @@ namespace GigHub.Web.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("GigHub.Web.Models.Attendance", b =>
+            modelBuilder.Entity("GigHub.Web.Core.Models.Attendance", b =>
                 {
-                    b.HasOne("GigHub.Web.Models.ApplicationUser", "Attendee")
+                    b.HasOne("GigHub.Web.Core.Models.ApplicationUser", "Attendee")
                         .WithMany()
                         .HasForeignKey("AttendeeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GigHub.Web.Models.Gig", "Gig")
+                    b.HasOne("GigHub.Web.Core.Models.Gig", "Gig")
                         .WithMany("Attendances")
                         .HasForeignKey("GigId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("GigHub.Web.Models.Following", b =>
+            modelBuilder.Entity("GigHub.Web.Core.Models.Following", b =>
                 {
-                    b.HasOne("GigHub.Web.Models.ApplicationUser", "Followee")
+                    b.HasOne("GigHub.Web.Core.Models.ApplicationUser", "Followee")
                         .WithMany()
                         .HasForeignKey("FolloweeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GigHub.Web.Models.ApplicationUser", "Follower")
+                    b.HasOne("GigHub.Web.Core.Models.ApplicationUser", "Follower")
                         .WithMany()
                         .HasForeignKey("FollowerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("GigHub.Web.Models.Gig", b =>
+            modelBuilder.Entity("GigHub.Web.Core.Models.Gig", b =>
                 {
-                    b.HasOne("GigHub.Web.Models.ApplicationUser", "Artist")
+                    b.HasOne("GigHub.Web.Core.Models.ApplicationUser", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -326,22 +326,22 @@ namespace GigHub.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("GigHub.Web.Models.Notification", b =>
+            modelBuilder.Entity("GigHub.Web.Core.Models.Notification", b =>
                 {
-                    b.HasOne("GigHub.Web.Models.Gig", "Gig")
+                    b.HasOne("GigHub.Web.Core.Models.Gig", "Gig")
                         .WithMany()
                         .HasForeignKey("GigId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("GigHub.Web.Models.UserNotification", b =>
+            modelBuilder.Entity("GigHub.Web.Core.Models.UserNotification", b =>
                 {
-                    b.HasOne("GigHub.Web.Models.Notification", "Notification")
+                    b.HasOne("GigHub.Web.Core.Models.Notification", "Notification")
                         .WithMany()
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GigHub.Web.Models.ApplicationUser", "User")
+                    b.HasOne("GigHub.Web.Core.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -357,7 +357,7 @@ namespace GigHub.Web.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("GigHub.Web.Models.ApplicationUser")
+                    b.HasOne("GigHub.Web.Core.Models.ApplicationUser")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -365,7 +365,7 @@ namespace GigHub.Web.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("GigHub.Web.Models.ApplicationUser")
+                    b.HasOne("GigHub.Web.Core.Models.ApplicationUser")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -378,7 +378,7 @@ namespace GigHub.Web.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GigHub.Web.Models.ApplicationUser")
+                    b.HasOne("GigHub.Web.Core.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

@@ -1,0 +1,13 @@
+using System;
+
+using GigHub.Web.Core.Models;
+
+namespace GigHub.Web.Core.ViewModels
+{
+    public class GigDetailsViewModel
+    {
+        public Gig Gig { get; set; }
+        public bool IsAttending { get; set; }
+        public bool IsFollowing { get; set; }
+    }
+}

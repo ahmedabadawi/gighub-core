@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
-using GigHub.Web.Models;
+using GigHub.Web.Core.Models;
 
 namespace GigHub.Web.Data
 {

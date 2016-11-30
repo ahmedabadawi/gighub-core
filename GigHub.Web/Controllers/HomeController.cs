@@ -2,39 +2,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 
-using GigHub.Web.Data;
-using GigHub.Web.Models;
-using GigHub.Web.ViewModels;
+using GigHub.Web.Core;
+using GigHub.Web.Core.Models;
+using GigHub.Web.Core.ViewModels;
+using GigHub.Web.Core.Repositories;
 
 namespace GigHub.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
+        private readonly IUnitOfWork _unitOfWork;
+
         public HomeController (
-            ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IUnitOfWork unitOfWork)
         {
-            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<IActionResult> Index(string query = null)
         {
-            var upcomingGigs = 
-                _context.Gigs
-                .Include(g => g.Artist)
-                .Include(g => g.Genre)
-                .Where(g => g.DateTime > DateTime.Now && !g.IsCancelled);
+            var upcomingGigs = _unitOfWork.Gigs.GetUpcomingGigs();
             
             if(!String.IsNullOrWhiteSpace(query)) {
                 upcomingGigs = upcomingGigs
@@ -49,10 +47,7 @@ namespace GigHub.Web.Controllers
             if(_signInManager.IsSignedIn(HttpContext.User)) 
             {
                 var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-                attendances = _context.Attendances
-                    .Where(a => a.AttendeeId == currentUser.Id && a.Gig.DateTime > DateTime.Now)
-                    .ToList()
-                    .ToLookup(a => a.GigId);
+                attendances = _unitOfWork.Attendances.GetFutureAttendances(currentUser.Id).ToLookup(a => a.GigId);
                 
             }
             else

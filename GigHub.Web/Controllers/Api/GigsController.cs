@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-using GigHub.Web.Models;
+using GigHub.Web.Core.Models;
 using GigHub.Web.Data;
 
 namespace GigHub.Web.Controllers.Api

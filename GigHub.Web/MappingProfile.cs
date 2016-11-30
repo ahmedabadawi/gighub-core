@@ -1,7 +1,7 @@
 using AutoMapper;
 
-using GigHub.Web.Models;
-using GigHub.Web.Dtos;
+using GigHub.Web.Core.Models;
+using GigHub.Web.Core.Dtos;
 
 namespace GigHub.Web
 {

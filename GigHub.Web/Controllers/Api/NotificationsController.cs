@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 
-using GigHub.Web.ViewModels;
+using GigHub.Web.Core.ViewModels;
 using GigHub.Web.Data;
-using GigHub.Web.Models;
-using GigHub.Web.Dtos;
+using GigHub.Web.Core.Models;
+using GigHub.Web.Core.Dtos;
 
 namespace GigHub.Web.Controllers.Api
 {

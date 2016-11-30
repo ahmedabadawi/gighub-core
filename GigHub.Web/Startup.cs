@@ -12,8 +12,12 @@ using Microsoft.Extensions.Logging;
 using AutoMapper;
 
 using GigHub.Web.Data;
-using GigHub.Web.Models;
+using GigHub.Web.Core.Models;
 using GigHub.Web.Services;
+using GigHub.Web.Core;
+using GigHub.Web.Core.Repositories;
+using GigHub.Web.Repositories;
+using GigHub.Web.Persistence;
 
 namespace GigHub.Web
 {
@@ -63,6 +67,15 @@ namespace GigHub.Web
                 });
             
             services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
+
+            // Add Repositories
+            services.AddScoped<IGigRepository, GigRepository>();
+            services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+            services.AddScoped<IFollowingRepository, FollowingRepository>();
+            services.AddScoped<IGenreRepository, GenreRepository>();
+
+            // Add Persistence
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-using GigHub.Web.ViewModels;
+using GigHub.Web.Core.ViewModels;
 using GigHub.Web.Data;
-using GigHub.Web.Models;
+using GigHub.Web.Core.Models;
 
 namespace GigHub.Web.Controllers
 {
