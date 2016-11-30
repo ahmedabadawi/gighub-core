@@ -8,8 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
+using GigHub.Web.Core;
 using GigHub.Web.Core.Models;
-using GigHub.Web.Persistence;
 
 namespace GigHub.Web.Controllers.Api
 {
@@ -18,15 +18,15 @@ namespace GigHub.Web.Controllers.Api
     public class GigsController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
 
         public GigsController(
-            ApplicationDbContext context,
+            IUnitOfWork unitOfWork,
             UserManager<ApplicationUser> userManager,
             ILoggerFactory loggerFactory)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
             _logger = loggerFactory.CreateLogger<GigsController>();
         }
@@ -35,16 +35,13 @@ namespace GigHub.Web.Controllers.Api
         public async Task<IActionResult> Cancel(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var gig = _context.Gigs
-                .Include(g => g.Attendances)
-                    .ThenInclude(a => a.Attendee)
-                .Single(g => g.Id == id && g.ArtistId == currentUser.Id);
+            var gig = _unitOfWork.Gigs.GetGigWithAttendees(id);
             
             if(gig.IsCancelled) return NotFound();    
 
             gig.Cancel();
 
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return Ok();
         }
