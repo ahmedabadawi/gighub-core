@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+
 using GigHub.Web.Core.Models;
+using GigHub.Web.Persistence.EntityMappings;
 
 namespace GigHub.Web.Persistence
 {
@@ -29,8 +31,16 @@ namespace GigHub.Web.Persistence
             base.OnModelCreating(builder);
             builder.HasPostgresExtension("uuid-ossp");
             
-            builder.Entity<Attendance>()
-                .HasKey(a => new { a.GigId, a.AttendeeId });
+            var mappingConfiguration = new List<IEntityMappingConfiguration>();
+            mappingConfiguration.Add(new GigMapping());
+            mappingConfiguration.Add(new GenreMapping());
+            mappingConfiguration.Add(new AttendanceMapping());
+            mappingConfiguration.Add(new NotificationMapping());
+            mappingConfiguration.Add(new ApplicationUserMapping());
+
+            mappingConfiguration.ForEach(m => m.Map(builder));
+            
+            
 /*
             builder.Entity<Attendance>()            
                 .HasOne(a => a.Gig)
