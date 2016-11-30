@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using GigHub.Web.Core;
 using GigHub.Web.Core.ViewModels;
-using GigHub.Web.Persistence;
 using GigHub.Web.Core.Models;
 using GigHub.Web.Core.Dtos;
 
@@ -19,15 +19,15 @@ namespace GigHub.Web.Controllers.Api
     public class FollowingsController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
 
         public FollowingsController(
-            ApplicationDbContext context,
+            IUnitOfWork unitOfWork,
             UserManager<ApplicationUser> userManager,
             ILoggerFactory loggerFactory)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
             _logger = loggerFactory.CreateLogger<FollowingsController>();
         }
@@ -42,8 +42,7 @@ namespace GigHub.Web.Controllers.Api
             _logger.LogInformation("Current User: " + currentUser.Id);
 
             var exists = 
-                _context.Followings.Any(
-                    f => f.FollowerId == currentUser.Id && f.FolloweeId == dto.ArtistId);
+                _unitOfWork.Followings.GetFollowing(currentUser.Id, dto.ArtistId) != null;
             
             if(exists)
             {
@@ -55,8 +54,8 @@ namespace GigHub.Web.Controllers.Api
                 FollowerId = currentUser.Id
             };
 
-            _context.Followings.Add(following);
-            _context.SaveChanges();
+            _unitOfWork.Followings.Add(following);
+            _unitOfWork.Complete();
 
             return Ok();
         }
@@ -66,16 +65,15 @@ namespace GigHub.Web.Controllers.Api
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             
-            var following = _context.Followings
-                .SingleOrDefault(f => f.FollowerId == currentUser.Id && f.FolloweeId == id);
+            var following = _unitOfWork.Followings.GetFollowing(currentUser.Id, id);
             
             if (following == null)
             {
                 return NotFound();
             }
 
-            _context.Followings.Remove(following);
-            _context.SaveChanges();
+            _unitOfWork.Followings.Remove(following);
+            _unitOfWork.Complete();
 
             return Ok(id);
         }
