@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using GigHub.Web.Core;
 using GigHub.Web.Core.ViewModels;
-using GigHub.Web.Persistence;
 using GigHub.Web.Core.Models;
 using GigHub.Web.Core.Dtos;
 
@@ -19,23 +19,17 @@ namespace GigHub.Web.Controllers.Api
     public class AttendancesController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
 
         public AttendancesController(
-            ApplicationDbContext context,
+            IUnitOfWork unitOfWork,
             UserManager<ApplicationUser> userManager,
             ILoggerFactory loggerFactory)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
             _logger = loggerFactory.CreateLogger<AttendancesController>();
-        }
-
-        public IEnumerable<Attendance> GetAll() {
-            var attendances = _context.Attendances.ToList();
-
-            return attendances;
         }
 
         [HttpPost]
@@ -47,9 +41,8 @@ namespace GigHub.Web.Controllers.Api
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             _logger.LogInformation("Current User: " + currentUser.Id);
 
-            var exists = 
-                _context.Attendances.Any(
-                    a => a.AttendeeId == currentUser.Id && a.GigId == dto.GigId);
+            var exists =
+                _unitOfWork.Attendances.GetAttendance(dto.GigId, currentUser.Id) != null; 
             
             if(exists)
             {
@@ -60,8 +53,8 @@ namespace GigHub.Web.Controllers.Api
                 AttendeeId = currentUser.Id
             };
 
-            _context.Attendances.Add(attendance);
-            _context.SaveChanges();
+            _unitOfWork.Attendances.Add(attendance);
+            _unitOfWork.Complete();
 
             return Ok();
         }
@@ -71,16 +64,15 @@ namespace GigHub.Web.Controllers.Api
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
 
-            var attendance = _context.Attendances
-                .SingleOrDefault(a => a.GigId == id && a.AttendeeId == currentUser.Id);
+            var attendance = _unitOfWork.Attendances.GetAttendance(id, currentUser.Id);
 
             if(attendance == null)
             {
                 return NotFound();
             }
 
-            _context.Attendances.Remove(attendance);
-            _context.SaveChanges();
+            _unitOfWork.Attendances.Remove(attendance);
+            _unitOfWork.Complete();
 
             return Ok(id);
         }
