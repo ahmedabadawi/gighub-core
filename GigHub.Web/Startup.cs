@@ -16,8 +16,9 @@ using GigHub.Web.Core.Models;
 using GigHub.Web.Services;
 using GigHub.Web.Core;
 using GigHub.Web.Core.Repositories;
-using GigHub.Web.Repositories;
 using GigHub.Web.Persistence;
+using GigHub.Web.Persistence.Repositories;
+
 
 namespace GigHub.Web
 {

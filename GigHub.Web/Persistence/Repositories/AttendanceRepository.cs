@@ -6,7 +6,7 @@ using GigHub.Web.Data;
 using GigHub.Web.Core.Models;
 using GigHub.Web.Core.Repositories;
 
-namespace GigHub.Web.Repositories
+namespace GigHub.Web.Persistence.Repositories
 {
     public class AttendanceRepository : IAttendanceRepository
     {
