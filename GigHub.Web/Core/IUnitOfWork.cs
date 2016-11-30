@@ -11,7 +11,8 @@ namespace GigHub.Web.Core
         IAttendanceRepository Attendances { get; }
         IFollowingRepository Followings { get; }
         IGenreRepository Genres { get; }
-
+        INotificationRepository Notifications { get; }
+        
         void Complete();
     }
 }

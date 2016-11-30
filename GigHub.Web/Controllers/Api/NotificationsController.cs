@@ -6,13 +6,14 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 
+using GigHub.Web.Core;
 using GigHub.Web.Core.ViewModels;
-using GigHub.Web.Persistence;
 using GigHub.Web.Core.Models;
 using GigHub.Web.Core.Dtos;
+
+using GigHub.Web.Helpers.Extensions;
 
 namespace GigHub.Web.Controllers.Api
 {
@@ -21,17 +22,17 @@ namespace GigHub.Web.Controllers.Api
     public class NotificationsController : Controller
     {        
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
 
         public NotificationsController(
-            ApplicationDbContext context,
+            IUnitOfWork  unitOfWork,
             UserManager<ApplicationUser> userManager,
             IMapper mapper,
             ILoggerFactory loggerFactory)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
             _mapper = mapper;
             _logger = loggerFactory.CreateLogger<NotificationsController>();
@@ -42,14 +43,7 @@ namespace GigHub.Web.Controllers.Api
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
 
-            var userNotifications = 
-                _context.UserNotifications
-                .Where(un => un.UserId == currentUser.Id && !un.IsRead)
-                .Include(un => un.Notification)
-                    .ThenInclude(n => n.Gig.Artist)
-                .ToList();
-            // TODO: Remove the re-projection
-            var notifications = userNotifications.Select(un => un.Notification);
+            var notifications = _unitOfWork.Notifications.GetNewNotifications(currentUser.Id);
 
             return notifications.Select(_mapper.Map<Notification, NotificationDto>);
         }
@@ -58,14 +52,11 @@ namespace GigHub.Web.Controllers.Api
         public async Task<IActionResult> MarkAsRead()
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var userNotifications = 
-                _context.UserNotifications
-                .Where(un => un.UserId == currentUser.Id && !un.IsRead)
-                .ToList();
+            var userNotifications = _unitOfWork.Notifications.GetUnreadUserNotifications(currentUser.Id);
 
             userNotifications.ForEach(n => n.Read());
 
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return Ok();
         }

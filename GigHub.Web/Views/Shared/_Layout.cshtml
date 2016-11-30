@@ -74,7 +74,6 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-    @RenderSection("scripts", required: false)
     <script type="text/x-template" id="notifications-template">
         <ul class="notifications">
             <%
@@ -103,8 +102,7 @@
                 });
             %>
         </ul>
-    </script>
-    
+    </script>    
     <script>
         $(document).ready(function() {
             $.getJSON("/api/Notifications", function(notifications) {
@@ -126,19 +124,21 @@
                     placement: "bottom",
                     template: '<div class="popover popover-notifications" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
                 }).on("shown.bs.popover", function() {
+                    /*
                     $.post("/api/Notifications", { })
-                    .done(function() {
-                        $(".js-notifications-count")
-                            .text("")
-                            .addClass("hide");
-                    })
-                    .fail(function() {
-                        alert("Something failed!");
-                    });
+                        .done(function() {
+                            $(".js-notifications-count")
+                                .text("")
+                                .addClass("hide");
+                        })
+                        .fail(function() {
+                            alert("Something failed!");
+                        });*/
                 });
             });
             
         });
     </script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

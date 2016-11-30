@@ -22,7 +22,7 @@ namespace GigHub.Web.Core.Models
         private Notification(NotificationType type, Gig gig)
         {
             if(gig == null) throw new ArgumentNullException("gig");
-
+            this.DateTime = DateTime.Now;
             this.Type = type;
             this.Gig = gig;
         }   

@@ -73,7 +73,8 @@ namespace GigHub.Web
             services.AddScoped<IAttendanceRepository, AttendanceRepository>();
             services.AddScoped<IFollowingRepository, FollowingRepository>();
             services.AddScoped<IGenreRepository, GenreRepository>();
-
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            
             // Add Persistence
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
