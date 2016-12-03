@@ -4,7 +4,10 @@ First, I would like to thank Mosh Hamedani for his course on PluralSight.
 I watched this course to brush up my C# coding skills after few years working as a project manager / scrum master and I wanted to follow along. 
 My personal machine is Linux/Debian and was exploring .Net Core so I thought I will follow along the implementation on the new Asp.Net Core.
 
-Technologies Used
+## Overview
+GigHub is a simple web application that allows users to search gigs and follow their favorite artists. Refer to the userstories.md for detailed requirements and user stories
+
+## Technologies Used
 - dotnet Core
 - Yeoman
 - Gulp
