@@ -1,39 +1,22 @@
-# Welcome to ASP.NET Core
+# GigHub in ASP.NET Core
 
-We've made some big updates in this release, so it’s **important** that you spend a few minutes to learn what’s new.
+First, I would like to thank Mosh Hamedani for his course on PluralSight. 
+I watched this course to brush up my C# coding skills after few years working as a project manager / scrum master and I wanted to follow along. 
+My personal machine is Linux/Debian and was exploring .Net Core so I thought I will follow along the implementation on the new Asp.Net Core.
 
-You've created a new ASP.NET Core project. [Learn what's new](https://go.microsoft.com/fwlink/?LinkId=518016)
+Technologies Used
+- dotnet Core
+- Yeoman
+- Gulp
+- PostgreSQL
+- Visual Studio Code 
 
-## This application consists of:
+## Issues
+- Moq mocking framework is not working in .net Core
+- Fluent model mapping is not complete
 
-*   Sample pages using ASP.NET Core MVC
-*   [Bower](https://go.microsoft.com/fwlink/?LinkId=518004) for managing client-side libraries
-*   Theming using [Bootstrap](https://go.microsoft.com/fwlink/?LinkID=398939)
-
-## How to
-
-*   [Add a Controller and View](https://go.microsoft.com/fwlink/?LinkID=398600)
-*   [Add an appsetting in config and access it in app.](https://go.microsoft.com/fwlink/?LinkID=699562)
-*   [Manage User Secrets using Secret Manager.](https://go.microsoft.com/fwlink/?LinkId=699315)
-*   [Use logging to log a message.](https://go.microsoft.com/fwlink/?LinkId=699316)
-*   [Add packages using NuGet.](https://go.microsoft.com/fwlink/?LinkId=699317)
-*   [Add client packages using Bower.](https://go.microsoft.com/fwlink/?LinkId=699318)
-*   [Target development, staging or production environment.](https://go.microsoft.com/fwlink/?LinkId=699319)
-
-## Overview
-
-*   [Conceptual overview of what is ASP.NET Core](https://go.microsoft.com/fwlink/?LinkId=518008)
-*   [Fundamentals of ASP.NET Core such as Startup and middleware.](https://go.microsoft.com/fwlink/?LinkId=699320)
-*   [Working with Data](https://go.microsoft.com/fwlink/?LinkId=398602)
-*   [Security](https://go.microsoft.com/fwlink/?LinkId=398603)
-*   [Client side development](https://go.microsoft.com/fwlink/?LinkID=699321)
-*   [Develop on different platforms](https://go.microsoft.com/fwlink/?LinkID=699322)
-*   [Read more on the documentation site](https://go.microsoft.com/fwlink/?LinkID=699323)
-
-## Run & Deploy
-
-*   [Run your app](https://go.microsoft.com/fwlink/?LinkID=517851)
-*   [Run tools such as EF migrations and more](https://go.microsoft.com/fwlink/?LinkID=517853)
-*   [Publish to Microsoft Azure Web Apps](https://go.microsoft.com/fwlink/?LinkID=398609)
-
-We would love to hear your [feedback](https://go.microsoft.com/fwlink/?LinkId=518015)
+## Referenes
+If you want to go through the course, following are the links
+- [Become a Full-stack .NET Developer] (https://www.pluralsight.com/courses/full-stack-dot-net-developer-fundamentals)
+- [Become a Full-stack .NET Developer - Advanced Topics] (https://www.pluralsight.com/courses/full-stack-dot-net-developer)
+- [Become a Full-stack .NET Developer - Architecture and Testing] (https://www.pluralsight.com/courses/full-stack-dot-net-developer-architecture-testing)

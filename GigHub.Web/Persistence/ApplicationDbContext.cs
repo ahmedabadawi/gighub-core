@@ -38,9 +38,10 @@ namespace GigHub.Web.Persistence
             mappingConfiguration.Add(new NotificationMapping());
             mappingConfiguration.Add(new ApplicationUserMapping());
 
-            mappingConfiguration.ForEach(m => m.Map(builder));
+            //mappingConfiguration.ForEach(m => m.Map(builder));
             
-            
+            builder.Entity<Attendance>()
+                .HasKey(a => new { a.GigId, a.AttendeeId });
 /*
             builder.Entity<Attendance>()            
                 .HasOne(a => a.Gig)
