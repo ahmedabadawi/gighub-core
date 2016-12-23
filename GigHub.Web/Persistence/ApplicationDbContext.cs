@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
+//using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 using GigHub.Web.Core.Models;
 using GigHub.Web.Persistence.EntityMappings;
@@ -29,7 +29,7 @@ namespace GigHub.Web.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.HasPostgresExtension("uuid-ossp");
+            //builder.HasPostgresExtension("uuid-ossp");
             
             var mappingConfiguration = new List<IEntityMappingConfiguration>();
             mappingConfiguration.Add(new GigMapping());

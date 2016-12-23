@@ -8,7 +8,7 @@ namespace GigHub.Web.Persistence.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreatePostgresExtension("uuid-ossp");
+            //migrationBuilder.CreatePostgresExtension("uuid-ossp");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Id",
@@ -19,7 +19,7 @@ namespace GigHub.Web.Persistence.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPostgresExtension("uuid-ossp");
+            //migrationBuilder.DropPostgresExtension("uuid-ossp");
 
             migrationBuilder.AlterColumn<int>(
                 name: "Id",
